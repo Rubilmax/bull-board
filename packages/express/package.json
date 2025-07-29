@@ -1,5 +1,5 @@
 {
-  "name": "@bull-board/express",
+  "name": "@morpho-org/bull-board-express",
   "version": "6.19.0",
   "description": "A Express.js server adapter for Bull-Board dashboard.",
   "keywords": [
@@ -28,8 +28,13 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@bull-board/api": "6.19.0",
     "@bull-board/ui": "6.19.0",
+=======
+    "@bull-board/api": "6.12.0",
+    "@morpho-org/bull-board-ui": "6.12.0",
+>>>>>>> eff46e3 (feat(express): publish 6.12.0)
     "ejs": "^3.1.10",
     "express": "^5.2.1"
   },
