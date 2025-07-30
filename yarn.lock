@@ -459,18 +459,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bull-board/express@npm:^6.19.0, @bull-board/express@workspace:packages/express":
-  version: 0.0.0-use.local
-  resolution: "@bull-board/express@workspace:packages/express"
+"@bull-board/express@npm:^6.19.0":
+  version: 6.19.0
+  resolution: "@bull-board/express@npm:6.19.0"
   dependencies:
     "@bull-board/api": "npm:6.19.0"
     "@bull-board/ui": "npm:6.19.0"
-    "@types/ejs": "npm:^3.1.5"
-    "@types/express": "npm:^4.17.21 || ^5.0.0"
     ejs: "npm:^3.1.10"
     express: "npm:^5.2.1"
-  languageName: unknown
-  linkType: soft
+  checksum: 10c0/315c5596ef13f2c00b0032b1bd5da52479db1997db9ffc8312fbdceae45cc66148f883b3c86688457eb6d6de88566c5f517e34b74924f63c91512a60c40bb2c8
+  languageName: node
+  linkType: hard
 
 "@bull-board/fastify@npm:^6.19.0, @bull-board/fastify@workspace:packages/fastify":
   version: 0.0.0-use.local
@@ -2510,7 +2509,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@morpho-org/bull-board-ui@workspace:packages/ui":
+"@morpho-org/bull-board-express@workspace:packages/express":
+  version: 0.0.0-use.local
+  resolution: "@morpho-org/bull-board-express@workspace:packages/express"
+  dependencies:
+    "@bull-board/api": "npm:6.19.0"
+    "@morpho-org/bull-board-ui": "npm:6.19.0"
+    "@types/ejs": "npm:^3.1.5"
+    "@types/express": "npm:^4.17.21 || ^5.0.0"
+    ejs: "npm:^3.1.10"
+    express: "npm:^5.2.1"
+  languageName: unknown
+  linkType: soft
+
+"@morpho-org/bull-board-ui@npm:6.19.0, @morpho-org/bull-board-ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@morpho-org/bull-board-ui@workspace:packages/ui"
   dependencies:
