@@ -28,7 +28,7 @@ export const MenuTree = ({
     <ul className={cn(s.menu, level > 0 && s[`level-${level}`])}>
       {tree.children.map((node) => {
         const isLeafNode = !node.children.length;
-        const displayName = node.name;
+        const displayName = node.displayName || node.name;
         const menuPath = parentPath ? `${parentPath}/${node.name}` : node.name;
 
         return (

@@ -2,6 +2,7 @@ import type { AppQueue } from '@bull-board/api/typings/app';
 
 export interface AppQueueTreeNode {
   name: string;
+  displayName?: string;
   prefix: string;
   queue?: AppQueue;
   children: AppQueueTreeNode[];
@@ -22,6 +23,9 @@ export function toTree(queues: AppQueue[]): AppQueueTreeNode {
       // If no delimiter, add as direct child to root
       root.children.push({
         name: queue.name,
+        ...(queue.displayName && queue.displayName !== queue.name
+          ? { displayName: queue.displayName }
+          : {}),
         prefix: queue.name,
         queue,
         children: [],
@@ -41,6 +45,9 @@ export function toTree(queues: AppQueue[]): AppQueueTreeNode {
         const isLeafNode = index === parts.length - 1;
         node = {
           name: part,
+          ...(isLeafNode && queue.displayName && queue.displayName !== part
+            ? { displayName: queue.displayName }
+            : {}),
           prefix: parts.slice(0, index + 1).join(queue.delimiter),
           children: [],
           // Only set queue data if we're at the leaf node
@@ -63,7 +70,7 @@ function treeValue(tree: AppQueueTreeNode, sortKey: QueueSortKey): string | numb
     if (tree == null) return '';
 
     return (
-      (tree.queue?.displayName ?? tree.queue?.name ?? tree.name) +
+      (tree.queue?.displayName ?? tree.queue?.name ?? tree.displayName ?? tree.name) +
       treeValue(tree.children[0], sortKey)
     );
   }
