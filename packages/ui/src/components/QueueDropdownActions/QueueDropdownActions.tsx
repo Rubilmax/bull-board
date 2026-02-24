@@ -7,8 +7,10 @@ import { Button } from '../Button/Button';
 import { DropdownContent } from '../DropdownContent/DropdownContent';
 import { AddIcon } from '../Icons/Add';
 import { EllipsisVerticalIcon } from '../Icons/EllipsisVertical';
+import { ObliterateIcon } from '../Icons/Obliterate';
 import { PauseIcon } from '../Icons/Pause';
 import { PlayIcon } from '../Icons/Play';
+import { ConcurrencyIcon } from '../Icons/Concurrency';
 import { TrashIcon } from '../Icons/Trash';
 import s from './QueueDropdownActions.module.css';
 
@@ -17,7 +19,7 @@ export const QueueDropdownActions = ({
   actions,
 }: {
   queue: AppQueue;
-  actions: Omit<QueueActions, 'addJob'> & { addJob: () => void };
+  actions: Omit<QueueActions, 'addJob'> & { addJob: () => void; onConcurrency?: () => void };
 }) => {
   const { t } = useTranslation();
 
@@ -52,9 +54,19 @@ export const QueueDropdownActions = ({
               </>
             )}
           </Item>
+          {queue.type === 'bullmq' && !!actions.onConcurrency && (
+            <Item onSelect={actions.onConcurrency}>
+              <ConcurrencyIcon />
+              {t('QUEUE.ACTIONS.SET_CONCURRENCY')}
+            </Item>
+          )}
           <Item onSelect={actions.emptyQueue(queue.name)}>
             <TrashIcon />
             {t('QUEUE.ACTIONS.EMPTY')}
+          </Item>
+          <Item onSelect={actions.obliterateQueue(queue.name)} className={s.danger}>
+            <ObliterateIcon />
+            {t('QUEUE.ACTIONS.OBLITERATE')}
           </Item>
         </DropdownContent>
       </Portal>

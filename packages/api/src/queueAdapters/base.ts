@@ -95,6 +95,8 @@ export abstract class BaseAdapter {
 
   public abstract empty(): Promise<void>;
 
+  public abstract obliterate(): Promise<void>;
+
   public abstract promoteAll(): Promise<void>;
 
   public abstract removeJobScheduler(id: string): Promise<boolean>;
@@ -102,4 +104,8 @@ export abstract class BaseAdapter {
   public abstract getStatuses(): Status[];
 
   public abstract getJobStatuses(): JobStatus[];
+
+  public abstract getGlobalConcurrency(): Promise<number | null>;
+
+  public abstract setGlobalConcurrency(concurrency: number): Promise<void>;
 }

@@ -3,6 +3,7 @@ import { addJobHandler } from './handlers/addJob';
 import { cleanAllHandler } from './handlers/cleanAll';
 import { cleanJobHandler } from './handlers/cleanJob';
 import { emptyQueueHandler } from './handlers/emptyQueue';
+import { obliterateQueueHandler } from './handlers/obliterateQueue';
 import { entryPoint } from './handlers/entryPoint';
 import { jobLogsHandler } from './handlers/jobLogs';
 import { jobHandler } from './handlers/job';
@@ -17,6 +18,7 @@ import { promoteAllHandler } from './handlers/promoteAll';
 import { updateJobDataHandler } from './handlers/updateJobData';
 import { pauseAllHandler } from './handlers/pauseAll';
 import { resumeAllHandler } from './handlers/resumeAll';
+import { setGlobalConcurrencyHandler } from './handlers/setGlobalConcurrency';
 
 export const appRoutes: AppRouteDefs = {
   entryPoint: {
@@ -71,12 +73,22 @@ export const appRoutes: AppRouteDefs = {
     },
     {
       method: 'put',
+      route: '/api/queues/:queueName/concurrency',
+      handler: setGlobalConcurrencyHandler,
+    },
+    {
+      method: 'put',
       route: '/api/queues/:queueName/empty',
       handler: emptyQueueHandler,
     },
     {
       method: 'put',
-      route: '/api/queues/:queueName/:jobId/retry/:queueStatus',
+      route: '/api/queues/:queueName/obliterate',
+      handler: obliterateQueueHandler,
+    },
+    {
+      method: 'put',
+      route: '/api/queues/:queueName/:jobId/retry',
       handler: retryJobHandler,
     },
     {

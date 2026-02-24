@@ -148,12 +148,26 @@ export function useQueues(): Omit<QueuesState, 'updateQueues'> & { actions: Queu
       confirmQueueActions
     );
 
+  const obliterateQueue = (queueName: string) =>
+    withConfirmAndUpdate(
+      () => api.obliterateQueue(queueName),
+      t('QUEUE.ACTIONS.CONFIRM.OBLITERATE_QUEUE'),
+      true
+    );
+
   const addJob = (
     queueName: string,
     jobName: string,
     jobData: Record<any, any>,
     jobOptions: Record<any, any>
   ) => withConfirmAndUpdate(() => api.addJob(queueName, jobName, jobData, jobOptions), '', false);
+
+  const setGlobalConcurrency = (queueName: string, concurrency: number) =>
+    withConfirmAndUpdate(
+      () => api.setGlobalConcurrency(queueName, concurrency),
+      '',
+      false
+    );
 
   const pauseAll = withConfirmAndUpdate(
     () => api.pauseAllQueues(),
@@ -185,7 +199,9 @@ export function useQueues(): Omit<QueuesState, 'updateQueues'> & { actions: Queu
       resumeQueue,
       resumeMultiple,
       emptyQueue,
+      obliterateQueue,
       addJob,
+      setGlobalConcurrency,
     },
   };
 }

@@ -24,6 +24,7 @@ export interface QueueActions {
   resumeQueue: (queueName: string) => () => Promise<void>;
   resumeMultiple: (queueNames: string[]) => () => Promise<void>;
   emptyQueue: (queueName: string) => () => Promise<void>;
+  obliterateQueue: (queueName: string) => () => Promise<void>;
   updateQueues: () => Promise<void>;
   pollQueues: () => void;
   addJob: (
@@ -32,11 +33,12 @@ export interface QueueActions {
     jobData: any,
     jobOptions: any
   ) => () => Promise<void>;
+  setGlobalConcurrency: (queueName: string, concurrency: number) => () => Promise<void>;
 }
 
 export interface JobActions {
   promoteJob: (queueName: string) => (job: AppJob) => () => Promise<void>;
-  retryJob: (queueName: string, status: JobRetryStatus) => (job: AppJob) => () => Promise<void>;
+  retryJob: (queueName: string) => (job: AppJob) => () => Promise<void>;
   cleanJob: (queueName: string) => (job: AppJob) => () => Promise<void>;
   updateJobData: (
     queueName: string,

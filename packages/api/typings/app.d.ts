@@ -144,13 +144,15 @@ export interface AppQueue {
   allowCompletedRetries: boolean;
   isPaused: boolean;
   type: QueueType;
+  globalConcurrency: number | null;
 }
 
 export type HTTPMethod = 'get' | 'post' | 'put' | 'patch';
-export type HTTPStatus = 200 | 204 | 404 | 405 | 500;
+export type HTTPStatus = 200 | 204 | 400 | 403 | 404 | 405 | 500;
 
 export interface BullBoardRequest {
   queues: BullBoardQueues;
+  uiConfig: UIConfig;
   query: Record<string, any>;
   params: Record<string, any>;
   body: Record<string, any>;
@@ -212,7 +214,7 @@ export interface Pagination {
   };
 }
 
-export type FormatterField = 'data' | 'returnValue' | 'name';
+export type FormatterField = 'data' | 'returnValue' | 'name' | 'progress';
 
 export type BoardOptions = {
   uiBasePath?: string;
@@ -237,6 +239,11 @@ export type UIConfig = Partial<{
     forceInterval: number;
   }>;
   menu?: { width?: string };
+  hideRedisDetails?: boolean;
+  environment?: {
+    label: string;
+    color: string;
+  };
 }>;
 
 export type FavIcon = {

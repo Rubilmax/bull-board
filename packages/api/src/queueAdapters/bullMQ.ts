@@ -74,6 +74,10 @@ export class BullMQAdapter extends BaseAdapter {
     return this.queue.drain();
   }
 
+  public obliterate(): Promise<void> {
+    return this.queue.obliterate({ force: false });
+  }
+
   public async promoteAll(): Promise<void> {
     // since bullmq 4.6.0
     if (typeof this.queue.promoteJobs === 'function') {
@@ -113,5 +117,17 @@ export class BullMQAdapter extends BaseAdapter {
       STATUSES.delayed,
       STATUSES.paused,
     ];
+  }
+
+  public getGlobalConcurrency(): Promise<number | null> {
+    return this.queue.getGlobalConcurrency?.() || null;
+  }
+
+  public async setGlobalConcurrency(concurrency: number): Promise<void> {
+    if (concurrency <= 0) {
+      await this.queue.removeGlobalConcurrency?.();
+    } else {
+      await this.queue.setGlobalConcurrency?.(concurrency);
+    }
   }
 }
