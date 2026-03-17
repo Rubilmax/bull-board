@@ -27,7 +27,7 @@ export const ConnectionToggles = () => {
             key={name}
             isActive={enabled}
             theme="basic"
-            onClick={() => toggleConnection(name, connectionNames)}
+            onClick={(e) => toggleConnection(name, connectionNames, e.metaKey)}
           >
             <span className={s.label}>
               {name}

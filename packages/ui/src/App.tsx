@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { ConfirmModal } from './components/ConfirmModal/ConfirmModal';
 import { ConnectionToggles } from './components/ConnectionToggles/ConnectionToggles';
@@ -13,8 +13,11 @@ import { useConfirm } from './hooks/useConfirm';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useLanguageWatch } from './hooks/useLanguageWatch';
 import { useMobileQuery } from './hooks/useMobileQuery';
+import { useConnectionFilterStore } from './hooks/useConnectionFilterStore';
+import { useDisplayGroupFilterStore } from './hooks/useDisplayGroupFilterStore';
 import { useQueues } from './hooks/useQueues';
 import { useScrollTopOnNav } from './hooks/useScrollTopOnNav';
+import { useSyncDisabledFilterWithUrl } from './hooks/useSyncDisabledFilterWithUrl';
 
 const JobPageLazy = React.lazy(() =>
   import('./pages/JobPage/JobPage').then(({ JobPage }) => ({ default: JobPage }))
@@ -32,11 +35,33 @@ const OverviewPageLazy = React.lazy(() =>
 
 export const App = () => {
   useScrollTopOnNav();
-  const { actions: queueActions } = useQueues();
+  const { queues, actions: queueActions } = useQueues();
   const { confirmProps } = useConfirm();
   const isMobile = useMobileQuery();
   useLanguageWatch();
   useDarkMode();
+  const isQueuePage = useRouteMatch('/queue/:name');
+  const { disabledConnections, setDisabledConnections } = useConnectionFilterStore();
+  const { disabledDisplayGroups, setDisabledDisplayGroups } = useDisplayGroupFilterStore();
+  const connectionNames = [
+    ...new Set((queues || []).map((queue) => queue.connection).filter((name): name is string => !!name)),
+  ];
+  const displayGroupNames = [
+    ...new Set((queues || []).map((queue) => queue.displayGroup).filter((name): name is string => !!name)),
+  ];
+
+  useSyncDisabledFilterWithUrl(
+    'dc',
+    connectionNames,
+    disabledConnections,
+    setDisabledConnections
+  );
+  useSyncDisabledFilterWithUrl(
+    'dg',
+    displayGroupNames,
+    disabledDisplayGroups,
+    setDisabledDisplayGroups
+  );
 
   useEffect(() => {
     queueActions.updateQueues();
@@ -49,9 +74,9 @@ export const App = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', overflow: 'hidden', minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0 }}>
               <Title />
-              <ConnectionToggles />
+              {!isQueuePage && <ConnectionToggles />}
             </div>
-            <DisplayGroupToggles />
+            {!isQueuePage && <DisplayGroupToggles />}
           </div>
           <div style={{ flexShrink: 0 }}>
             <HeaderActions />
